@@ -6,9 +6,9 @@ https://en.wikipedia.org/wiki/Reverse_Polish_notation) calculator.
 Most open-source RPN calculators are graphic replicas of old HP
 calculators. They look great, and as I studied in 1990s, I am a fan of
 HP calculators. But my needs are simpler and I want to use the
-keyboard (only). There are comand-line RPN calculators available
-e.g. `dc`, but they have irritating minor limitations, or too many
-bells-and-whistles.
+keyboard (only). There are command-line RPN calculators available
+e.g. `dc`, but they have irritating limitations, or are too hard
+to adapt.
 
 I wanted a super-simple keyboard RPN calculator that could *easily* be
 extended/adapted to my needs.
@@ -16,7 +16,6 @@ extended/adapted to my needs.
 Help text (at the moment of writing):
 ```
 > ./rpncalc.py h
-
 Stack:
    number - push, p - pop, c - clear, d - duplicate, w - swap
 Arithmetic:
@@ -95,7 +94,7 @@ not have exact representations in binary floating point (see the
 3.3000000000000003
 ```
 
-This is not a bug, and it will not be "fixed".  If it's good enough
+This is not a bug, and it will not be fixed.  If it's good enough
 for Python, it's good enough for me.
 
 
@@ -122,5 +121,5 @@ python -m unittest discover
 # Contributions and maintenance
 
 Issues/PRs are welcome. But please note that the intention is to keep
-it simple. I will add things I need when I need them, and perhaps add
-some functions just for fun.
+it simple. I will add things I need when I need them, and add some
+functions just for fun.

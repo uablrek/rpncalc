@@ -3,6 +3,7 @@
 import rpn
 import sys
 import math
+import re
 
 # https://stackoverflow.com/questions/17973278/python-decimal-engineering-notation-for-mili-10e-3-and-micro-10e-6
 def eng_string( x, format='%s', si=False):
@@ -83,46 +84,57 @@ UI functions:
             else:
                 r = self.c.exec(t)
         return r
+
     def top(self):
-        if len(self.c.stack) > 0:
-            print(self.c.top())
+        if len(self.c.stack) == 0:
+            raise IndexError("Stack empty")
+        print(self.c.top())
     def stack(self):
         for i in self.c.stack:
             print(i)
     def eng(self):
-        if len(self.c.stack) > 0:
-            print(eng_string(self.c.top(), format=self.format, si=self.si))
+        if len(self.c.stack) == 0:
+            raise IndexError("Stack empty")
+        print(eng_string(self.c.top(), format=self.format, si=self.si))
     def tsi(self): # (toggle si)
         self.si = not self.si
     def prec(self):
-        x = self.c.top()
+        if len(self.c.stack) == 0:
+            raise IndexError("Stack empty")
+        x = self.c.pop()
         self.format = f"%.{x}g"
     def deg(self):
         self.c.degrees = True
     def rad(self):
         self.c.degrees = False
     def hex(self):
-        if len(self.c.stack) > 0:
-            print(hex(self.c.top()))
-
+        if len(self.c.stack) == 0:
+            raise IndexError("Stack empty")
+        print(hex(self.c.top()))
 
 
 if __name__ == "__main__":
     c = rpncalc()
     if len(sys.argv) > 1:
-        r = None
-        for t in sys.argv[1:]:
-            r = c.eval(t)
-        if r:
-            print(r)
+        try:
+            r = None
+            for t in sys.argv[1:]:
+                r = c.eval(re.sub(' +', ' ', t))
+            if r:
+                print(r)
+        except Exception as e:
+            print(f"{type(e).__name__}: {e}")
         exit()
     while True:
         try:        
             line = input(f"({len(c.c.stack)}) > ")
-            r = c.eval(line)
-            if r:
-                print(r)
+            if not line or line.isspace():
+                c.stack()
+            else:
+                r = c.eval(re.sub(' +', ' ', line))
+                if r:
+                    print(r)
         except (EOFError, SystemExit):
             sys.exit(0)   # Is there another way?
-        except:
-            print("Error")
+        except Exception as e:
+            print(f"{type(e).__name__}: {e}")
