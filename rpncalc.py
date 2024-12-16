@@ -46,12 +46,12 @@ def eng_string( x, format='%s', si=False):
 class rpncalc:
     def __init__(self):
         self.c = rpn.calc()
-        self.si = True
-        self.format = "%.5g"
+        self.si = False
+        self.format = "%.4g"
         self.cmd = {
             "q": exit,
             "h": self.help,
-            "t": self.top,
+            "hc": self.print_constants,
             "=": self.top,
             "s": self.stack,
             "eng": self.eng,
@@ -61,14 +61,25 @@ class rpncalc:
             "rad": self.rad,
             "hex": self.hex,
         }
+        self.constants = {
+            "sb": (5.67e-8, "Stefan–Boltzmann (W/m2/K^4)"),
+            "Re": (6378e3, "Radius Earth (m)"),
+            "Rs": (696340e3, "Radius Sun (m)"),
+            "au": (149597870700, "Astronomical Unit (m)"),
+            "C": (299792458, "Speed of light (m/s)"),
+            "G": (6.6743e-11, "Gravitational constant (N*m2/kg2)"),
+            "g": (9.80665, "Gravity of Earth (m/s2)"),
+        }
         self.helptext = '''
 UI functions:
    q, ctrl-D - Quit
-   t, = - Print top-of-stack
+   h - Help
+   hc - Print constants
+   = - Print top-of-stack (top)
    s, (empty) - Print stack
    eng - Print top in engineering style
    si - Toggle si-prefix or exponent for "eng"
-   prec - Precision for "eng". Significant digits from top-of-stack
+   prec - Precision for "eng". Significant digits from top
    deg - Angles are in degrees
    rad - Angles are in radians
    hex - Print top as hexa-decimal
@@ -76,11 +87,16 @@ UI functions:
     def help(self):
         print(self.c.helptext, end='')
         print(self.helptext)
+    def print_constants(self):
+        for k,v in self.constants.items():
+            print(f"{k} - {v[1]}: {v[0]}")
     def eval(self, str):
         for t in str.split(' '):
+            r = None
             if t in self.cmd:
                 self.cmd[t]()
-                r = None
+            elif t in self.constants:
+                self.c.push(self.constants[t][0])
             else:
                 r = self.c.exec(t)
         return r

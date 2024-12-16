@@ -20,6 +20,9 @@ class calc:
             "sqrt": self.sqrt,
             "pow": self.pow,
             "sin": self.sin,
+            "asin": self.asin,
+            "ln": self.ln,
+            "exp": self.exp,
         }
         self.helptext = '''
 Stack:
@@ -27,9 +30,9 @@ Stack:
 Arithmetic:
    + - * /   ('x' is the same as '*')
 Constants:
-   pi e
+   pi, e
 Functions (most from Python math):
-   sq, sqrt, pow, sin
+   sq, sqrt, pow, sin, asin, ln, exp
 '''
     # Stack
     def top(self):
@@ -93,6 +96,20 @@ Functions (most from Python math):
         if self.degrees:
             x = math.radians(x)
         n = math.sin(x)
+        self.stack.append(n)
+        return n
+    def asin(self):
+        n = math.asin(self.pop())
+        if self.degrees:
+            n = math.degrees(n)
+        self.stack.append(n)
+        return n
+    def ln(self):
+        n = math.log(self.pop())
+        self.stack.append(n)
+        return n
+    def exp(self):
+        n = math.exp(self.pop())
         self.stack.append(n)
         return n
         

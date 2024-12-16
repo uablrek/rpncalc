@@ -19,19 +19,21 @@ Help text (at the moment of writing):
 Stack:
    number - push, p - pop, c - clear, d - duplicate, w - swap
 Arithmetic:
-   + - * /
+   + - * /   ('x' is the same as '*')
 Constants:
-   pi e
+   pi, e
 Functions (most from Python math):
-   sq, sqrt, pow, sin
+   sq, sqrt, pow, sin, asin, ln, exp
 
 UI functions:
    q, ctrl-D - Quit
-   t, = - Print top-of-stack
+   h - Help
+   hc - Print constants
+   = - Print top-of-stack (top)
    s, (empty) - Print stack
    eng - Print top in engineering style
    si - Toggle si-prefix or exponent for "eng"
-   prec - Precision for "eng". Significant digits from top-of-stack
+   prec - Precision for "eng". Significant digits from top
    deg - Angles are in degrees
    rad - Angles are in radians
    hex - Print top as hexa-decimal
@@ -39,26 +41,30 @@ UI functions:
 
 Example:
 ```
-./rpncalc.py h  # help
+./rpncalc.py h   # help
+./rpncalc.py hc  # Print extra constants (beside pi and e)
 # Volume of earth R=6378km, V=4/3*pi*r^3
-./rpncalc.py '4 3 / pi * 6378 3 pow *'
+./rpncalc.py '4 3 / pi * 6378 3 pow *'  # (in km3)
 1086781292542.8892
 # (note that the string is quoted to prevent the shell from expanding '*')
-# Interactive (in si units/prefix):
+# Or using 'x' and constants (no quotes needed)
+./rpncalc.py 4 3 / pi x Re 3 pow x eng # (in m3)
+1.0868e21
+# Interactive:
 ./rpncalc.py
 (0) > 4 3 /
 1.3333333333333333
 (1) > pi *
 4.1887902047863905
-(1) > 6378e3 3 pow
+(1) > Re 3 pow
 2.59449922152e+20
 (2) > *
 1.0867812925428892e+21
-(1) > eng
-1.0868Z
+(1) > si eng
+1.087Z
 ```
 
-`eng` to get [si prefix representation](
+`si eng` to get [si prefix representation](
 https://en.wikipedia.org/wiki/Metric_prefix). So the volume of earth is
 1.0868 Zm<sup>3</sup> 
 
@@ -68,8 +74,29 @@ alias rc="$PWD/rpncalc.py"
 rc pi =                           # Print pi
 rc 0xffc =                        # Hex -> decimal
 rc 4092 hex                       # Decimal -> hex
-rc si 3 prec 1086781292542.8 eng  # Volume of earth in km3 with 3 digits
+rc 3 prec 1086781292542.8 eng     # Volume of earth in km3 with 3 digits
 rc 20 5 x                         # Use 'x' instead of '*' (no shell expansion)
+rc au C / eng                     # Time for sunlight to reach Earth (s)
+rc Re sq g x G / eng              # Mass of Earth (kg)
+rc 3.828e26 au sq pi x 4 x / eng  # Solar energy per m2 at Earth distance
+```
+
+## Constants
+
+Beside the mathematical constants, like `pi` and `e`, other (physical)
+constants are defined. Since I use `rpncalc` for energy and
+astronomical computations, most are in that area. It is simple to add
+more in [rpncalc.py](rpncalc.py).
+
+```
+./rpncalc.py hc
+sb - Stefan–Boltzmann (W/m2/K^4): 5.67e-08
+Re - Radius Earth (m): 6378000.0
+Rs - Radius Sun (m): 696340000.0
+au - Astronomical Unit (m): 149597870700
+C - Speed of light (m/s): 299792458
+G - Gravitational constant (N*m2/kg2): 6.6743e-11
+g - Gravity of Earth (m/s2): 9.80665
 ```
 
 ## Key-pad comma

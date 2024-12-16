@@ -1,5 +1,6 @@
 import unittest
 import rpn
+from math import pi
 
 # https://ongspxm.gitlab.io/blog/2016/11/assertraises-testing-for-errors-in-unittest/
 
@@ -67,6 +68,8 @@ class Basic(unittest.TestCase):
         self.assertAlmostEqual(c.eval("pi 2 / sin"), 1, delta=0.01)
         c.degrees = True
         self.assertAlmostEqual(c.eval("90 sin"), 1, delta=0.01)
+        self.assertAlmostEqual(c.eval("45 sin asin"), 45, delta=0.01)
+        self.assertAlmostEqual(c.eval("pi 4 / sin asin"), pi/4, delta=0.01)
         
 if __name__ == '__main__':
     unittest.main()
