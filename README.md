@@ -73,6 +73,16 @@ rc si 3 prec 1086781292542.8 eng  # Volume of earth in km3 with 3 digits
 rc 20 5 x                         # Use 'x' instead of '*' (no shell expansion)
 ```
 
+## Key-pad comma
+
+In many keyboard layouts the Key-pad with "numlock" print a comma
+`,`. To remap to a dot do:
+
+```
+setxkbmap se -option kpdl:dot
+```
+(switch "se" to your layout)
+
 
 ## Standard Python arithmetic
 
