@@ -2,21 +2,35 @@ import math
 
 class calc:
     def __init__(self):
+        self.degrees = False
         self.stack = []
         self.cmd = {
+            "p": self.pop,
             "c": self.clear,
             "d": self.dup,
-            "p": self.pop,
+            "w": self.swap,            
             "+": self.plus,
             "-": self.minus,
             "*": self.mul,
+            "x": self.mul,
             "/": self.div,
             "pi": self.pi,
             "e": self.e,
             "sq": self.sq,
             "sqrt": self.sqrt,
             "pow": self.pow,
+            "sin": self.sin,
         }
+        self.helptext = '''
+Stack:
+   number - push, p - pop, c - clear, d - duplicate, w - swap
+Arithmetic:
+   + - * /   ('x' is the same as '*')
+Constants:
+   pi e
+Functions (most from Python math):
+   sq, sqrt, pow, sin
+'''
     # Stack
     def top(self):
         return self.stack[-1]
@@ -30,6 +44,11 @@ class calc:
         n = self.stack.pop()
         self.stack.append(n)
         self.stack.append(n)
+    def swap(self):
+        x = self.stack.pop()
+        y = self.stack.pop()
+        self.stack.append(x)
+        self.stack.append(y)
     # Basic arithmetic
     def plus(self):
         n = self.pop() + self.pop()
@@ -67,6 +86,13 @@ class calc:
     def pow(self):
         x = self.pop()
         n = math.pow(self.pop(), x)
+        self.stack.append(n)
+        return n
+    def sin(self):
+        x = self.pop()
+        if self.degrees:
+            x = math.radians(x)
+        n = math.sin(x)
         self.stack.append(n)
         return n
         

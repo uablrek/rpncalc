@@ -42,32 +42,87 @@ def eng_string( x, format='%s', si=False):
 
     return ( '%s'+format+'%s') % ( sign, x3, exp3_text)
 
+class rpncalc:
+    def __init__(self):
+        self.c = rpn.calc()
+        self.si = True
+        self.format = "%.5g"
+        self.cmd = {
+            "q": exit,
+            "h": self.help,
+            "t": self.top,
+            "=": self.top,
+            "s": self.stack,
+            "eng": self.eng,
+            "si": self.tsi,
+            "prec": self.prec,
+            "deg": self.deg,
+            "rad": self.rad,
+            "hex": self.hex,
+        }
+        self.helptext = '''
+UI functions:
+   q, ctrl-D - Quit
+   t, = - Print top-of-stack
+   s, (empty) - Print stack
+   eng - Print top in engineering style
+   si - Toggle si-prefix or exponent for "eng"
+   prec - Precision for "eng". Significant digits from top-of-stack
+   deg - Angles are in degrees
+   rad - Angles are in radians
+   hex - Print top as hexa-decimal
+'''
+    def help(self):
+        print(self.c.helptext, end='')
+        print(self.helptext)
+    def eval(self, str):
+        for t in str.split(' '):
+            if t in self.cmd:
+                self.cmd[t]()
+                r = None
+            else:
+                r = self.c.exec(t)
+        return r
+    def top(self):
+        if len(self.c.stack) > 0:
+            print(self.c.top())
+    def stack(self):
+        for i in self.c.stack:
+            print(i)
+    def eng(self):
+        if len(self.c.stack) > 0:
+            print(eng_string(self.c.top(), format=self.format, si=self.si))
+    def tsi(self): # (toggle si)
+        self.si = not self.si
+    def prec(self):
+        x = self.c.top()
+        self.format = f"%.{x}g"
+    def deg(self):
+        self.c.degrees = True
+    def rad(self):
+        self.c.degrees = False
+    def hex(self):
+        if len(self.c.stack) > 0:
+            print(hex(self.c.top()))
+
+
+
 if __name__ == "__main__":
-    c = rpn.calc()
+    c = rpncalc()
     if len(sys.argv) > 1:
+        r = None
         for t in sys.argv[1:]:
-            c.eval(t)
-        print(c.top())
+            r = c.eval(t)
+        if r:
+            print(r)
         exit()
     while True:
-        line = input(f"({len(c.stack)}) > ")
-        if line == "q":
-            exit()
-        if not line or line.isspace():
-            for i in c.stack:
-                print(i)
-            continue
-        if line == "t":
-            if len(c.stack) > 0:
-                print(c.top())
-            continue
-        if line == "eng":
-            if len(c.stack) > 0:
-                print(eng_string(c.top(), format="%.3f", si=True))
-            continue
-        try:
+        try:        
+            line = input(f"({len(c.c.stack)}) > ")
             r = c.eval(line)
             if r:
                 print(r)
+        except (EOFError, SystemExit):
+            sys.exit(0)   # Is there another way?
         except:
             print("Error")

@@ -13,7 +13,34 @@ bells-and-whistles.
 I wanted a super-simple keyboard RPN calculator that could *easily* be
 extended/adapted to my needs.
 
+Help text (at the moment of writing):
 ```
+> ./rpncalc.py h
+
+Stack:
+   number - push, p - pop, c - clear, d - duplicate, w - swap
+Arithmetic:
+   + - * /
+Constants:
+   pi e
+Functions (most from Python math):
+   sq, sqrt, pow, sin
+
+UI functions:
+   q, ctrl-D - Quit
+   t, = - Print top-of-stack
+   s, (empty) - Print stack
+   eng - Print top in engineering style
+   si - Toggle si-prefix or exponent for "eng"
+   prec - Precision for "eng". Significant digits from top-of-stack
+   deg - Angles are in degrees
+   rad - Angles are in radians
+   hex - Print top as hexa-decimal
+```
+
+Example:
+```
+./rpncalc.py h  # help
 # Volume of earth R=6378km, V=4/3*pi*r^3
 ./rpncalc.py '4 3 / pi * 6378 3 pow *'
 1086781292542.8892
@@ -29,12 +56,22 @@ extended/adapted to my needs.
 (2) > *
 1.0867812925428892e+21
 (1) > eng
-1.087Z
+1.0868Z
 ```
 
 `eng` to get [si prefix representation](
 https://en.wikipedia.org/wiki/Metric_prefix). So the volume of earth is
-1.087 Zm<sup>3</sup> 
+1.0868 Zm<sup>3</sup> 
+
+Recipes:
+```
+alias rc="$PWD/rpncalc.py"
+rc pi =                           # Print pi
+rc 0xffc =                        # Hex -> decimal
+rc 4092 hex                       # Decimal -> hex
+rc si 3 prec 1086781292542.8 eng  # Volume of earth in km3 with 3 digits
+rc 20 5 x                         # Use 'x' instead of '*' (no shell expansion)
+```
 
 
 ## Standard Python arithmetic

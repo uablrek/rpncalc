@@ -21,6 +21,10 @@ class Basic(unittest.TestCase):
         self.assertEqual(c.stack, [1, 1])
         c.clear()
         self.assertEqual(c.stack, [])
+        c.push(1)
+        c.push(2)
+        c.swap()
+        self.assertEqual(c.stack, [2, 1])
     def test_basic_arithmetic(self):
         c = rpn.calc()
         c.push(1)
@@ -60,5 +64,9 @@ class Basic(unittest.TestCase):
         self.assertEqual(c.eval("c"), None)
         self.assertEqual(c.eval("2 sq sqrt"), 2)
         self.assertAlmostEqual(c.eval("2 sq pi *"), 12.56, delta=0.5)
+        self.assertAlmostEqual(c.eval("pi 2 / sin"), 1, delta=0.01)
+        c.degrees = True
+        self.assertAlmostEqual(c.eval("90 sin"), 1, delta=0.01)
+        
 if __name__ == '__main__':
     unittest.main()
