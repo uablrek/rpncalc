@@ -37,6 +37,7 @@ UI functions:
    deg - Angles are in degrees
    rad - Angles are in radians
    hex - Print top as hexa-decimal
+   time - Print top as time (duration)
 ```
 
 Example:
@@ -74,11 +75,13 @@ alias rc="$PWD/rpncalc.py"
 rc pi =                           # Print pi
 rc 0xffc =                        # Hex -> decimal
 rc 4092 hex                       # Decimal -> hex
+rc 50 1 w /                       # invert top with "1 w /"
 rc 3 prec 1086781292542.8 eng     # Volume of earth in km3 with 3 digits
 rc 20 5 x                         # Use 'x' instead of '*' (no shell expansion)
 rc au C / eng                     # Time for sunlight to reach Earth (s)
 rc Re sq g x G / eng              # Mass of Earth (kg)
-rc 3.828e26 au sq pi x 4 x / eng  # Solar energy per m2 at Earth distance
+rc 3.828e26 au sq pi x 4 x / eng  # Solar power per m2 (W/m2) at Earth distance
+rc Dm 100 3.6 / / time            # Time to drive to the moon at 100 km/h
 ```
 
 ## Constants
@@ -90,13 +93,18 @@ more in [rpncalc.py](rpncalc.py).
 
 ```
 ./rpncalc.py hc
-sb - Stefan–Boltzmann (W/m2/K^4): 5.67e-08
+sb - Stefan–Boltzmann constant (W/m2/K^4): 5.67e-08
 Re - Radius Earth (m): 6378000.0
 Rs - Radius Sun (m): 696340000.0
 au - Astronomical Unit (m): 149597870700
 C - Speed of light (m/s): 299792458
 G - Gravitational constant (N*m2/kg2): 6.6743e-11
 g - Gravity of Earth (m/s2): 9.80665
+ly - Light year (m): 9460730472580800
+Dm - Distance to the moon (m): 384400000
+btu - British Thermal Unit (J): 1055.1
+kcal - Kilocalorie (J): 4184
+kwh - kWh (J): 3600000.0
 ```
 
 ## Key-pad comma
@@ -137,7 +145,7 @@ The calculator passes all exceptions to the caller. I.e. no exceptions
 are caught or raised by the calculator. This is intentional.
 
 New math functions are added to the calculator (e.g. trig), while
-functions like nice printouts or save/restore are added to the UI.
+functions like printouts or modes (deg/rad) are added to the UI.
 
 The calculator must always be possible to test with unit-tests.
 ```

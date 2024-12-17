@@ -4,6 +4,7 @@ import rpn
 import sys
 import math
 import re
+import datetime
 
 # https://stackoverflow.com/questions/17973278/python-decimal-engineering-notation-for-mili-10e-3-and-micro-10e-6
 def eng_string( x, format='%s', si=False):
@@ -60,15 +61,21 @@ class rpncalc:
             "deg": self.deg,
             "rad": self.rad,
             "hex": self.hex,
+            "time": self.time,
         }
         self.constants = {
-            "sb": (5.67e-8, "Stefan–Boltzmann (W/m2/K^4)"),
+            "sb": (5.67e-8, "Stefan–Boltzmann constant (W/m2/K^4)"),
             "Re": (6378e3, "Radius Earth (m)"),
             "Rs": (696340e3, "Radius Sun (m)"),
             "au": (149597870700, "Astronomical Unit (m)"),
             "C": (299792458, "Speed of light (m/s)"),
             "G": (6.6743e-11, "Gravitational constant (N*m2/kg2)"),
             "g": (9.80665, "Gravity of Earth (m/s2)"),
+            "ly": (9460730472580800, "Light year (m)"),
+            "Dm": (384400000, "Distance to the moon (m)"),
+            "btu": (1055.1, "British Thermal Unit (J)"),
+            "kcal": (4184, "Kilocalorie (J)"),
+            "kwh": (3.6e6, "kWh (J)"),
         }
         self.helptext = '''
 UI functions:
@@ -83,6 +90,7 @@ UI functions:
    deg - Angles are in degrees
    rad - Angles are in radians
    hex - Print top as hexa-decimal
+   time - Print top as time (duration)
 '''
     def help(self):
         print(self.c.helptext, end='')
@@ -127,7 +135,11 @@ UI functions:
         if len(self.c.stack) == 0:
             raise IndexError("Stack empty")
         print(hex(self.c.top()))
-
+    def time(self):
+        if len(self.c.stack) == 0:
+            raise IndexError("Stack empty")
+        t = round(self.c.top())
+        print(datetime.timedelta(seconds=t))
 
 if __name__ == "__main__":
     c = rpncalc()
