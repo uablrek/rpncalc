@@ -23,7 +23,7 @@ Arithmetic:
 Constants:
    pi, e
 Functions (most from Python math):
-   sq, sqrt, pow, sin, asin, ln, exp
+   neg, sq, sqrt, pow, sin, asin, ln, exp
 
 UI functions:
    q, ctrl-D - Quit
@@ -78,15 +78,16 @@ rc 4092 hex                       # Decimal -> hex
 rc 50 1 w /                       # invert top with "1 w /"
 rc 3 prec 1086781292542.8 eng     # Volume of earth in km3 with 3 digits
 rc 20 5 x                         # Use 'x' instead of '*' (no shell expansion)
-rc au C / eng                     # Time for sunlight to reach Earth (s)
+rc au C / time                    # Time for sunlight to reach Earth
 rc Re sq g x G / eng              # Mass of Earth (kg)
 rc Ls au sq pi x 4 x / eng        # Solar power per m2 (W/m2) at Earth distance
 rc Dm 100 3.6 / / time            # Time to drive to the moon at 100 km/h
+rc -18 Z -                        # -18 degrees Celsius in degrees Kelvin
 ```
 
 ## Constants
 
-Beside the mathematical constants, like `pi` and `e`, other (physical)
+Beside the mathematical constants, `pi` and `e`, other (physical)
 constants are defined. Since I use `rpncalc` for energy and
 astronomical computations, most are in that area. It is simple to add
 more in [rpncalc.py](rpncalc.py).
@@ -105,7 +106,9 @@ Dm - Distance to the moon (m): 384400000
 btu - British Thermal Unit (J): 1055.1
 kcal - Kilocalorie (J): 4184
 kwh - kWh (J): 3600000.0
-Ls - Solar luminosity (W): 3828000000000.0
+Ls - Solar Luminosity (W): 3.828e+26
+Z - Absolute Zero temperature (Celsius): -273.15
+mev - MeV Mega Electron Volt (J): 1.6e-13
 ```
 
 ## Key-pad comma
@@ -140,13 +143,14 @@ Implementation consists of two parts:
 
 1. [The calculator](rpn.py). The stack and core functions
 2. [The User Interface](rpncalc.py). Calls the calculator and add non-math
-   functions like `eng` and "print-stack"
+   functions, like print functions, and physical constants
 
 The calculator passes all exceptions to the caller. I.e. no exceptions
 are caught or raised by the calculator. This is intentional.
 
 New math functions are added to the calculator (e.g. trig), while
-functions like printouts or modes (deg/rad) are added to the UI.
+functions like printouts or modes (deg/rad), and constants are added to
+the UI.
 
 The calculator must always be possible to test with unit-tests.
 ```
@@ -159,3 +163,9 @@ python -m unittest discover
 Issues/PRs are welcome. But please note that the intention is to keep
 it simple. I will add things I need when I need them, and add some
 functions just for fun.
+
+I have refrained from adding some "memory" function, even though it
+would be simple. A bit of a point with RPN is to *not* need memories.
+
+I *might* add configuration in json to allow users to add constants
+without altering the code. But so far I have no users, so...

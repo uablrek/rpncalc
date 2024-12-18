@@ -76,7 +76,9 @@ class rpncalc:
             "btu": (1055.1, "British Thermal Unit (J)"),
             "kcal": (4184, "Kilocalorie (J)"),
             "kwh": (3.6e6, "kWh (J)"),
-            "Ls": (3.828e26, "Solar luminosity (W)")
+            "Ls": (3.828e26, "Solar Luminosity (W)"),
+            "Z": (-273.15, "Absolute Zero temperature (Celsius)"),
+            "mev": (1.6e-13, "MeV Mega Electron Volt (J)"),
         }
         self.helptext = '''
 UI functions:

@@ -59,6 +59,7 @@ class Basic(unittest.TestCase):
         with self.assertRaises(KeyError): c.exec("gurka")
         self.assertEqual(c.stack, [16, 10.0])
         self.assertEqual(c.exec("+"), 26)
+        self.assertEqual(c.exec("neg"), -26)
     def test_eval(self):
         c = rpn.calc()
         self.assertEqual(c.eval("2 5 +"), 7)

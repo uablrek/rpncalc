@@ -16,6 +16,7 @@ class calc:
             "/": self.div,
             "pi": self.pi,
             "e": self.e,
+            "neg": self.neg,
             "sq": self.sq,
             "sqrt": self.sqrt,
             "pow": self.pow,
@@ -32,7 +33,7 @@ Arithmetic:
 Constants:
    pi, e
 Functions (most from Python math):
-   sq, sqrt, pow, sin, asin, ln, exp
+   neg, sq, sqrt, pow, sin, asin, ln, exp
 '''
     # Stack
     def top(self):
@@ -77,6 +78,10 @@ Functions (most from Python math):
     def e(self):
         self.stack.append(math.e)
     # Math functions
+    def neg(self):
+        n = -self.pop()
+        self.stack.append(n)
+        return n
     def sq(self):
         x = self.pop()
         n = x * x
