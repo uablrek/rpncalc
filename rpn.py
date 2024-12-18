@@ -129,6 +129,6 @@ Functions (most from Python math):
         return self.cmd[str]()
     # Eval a token sequence
     def eval(self, str):
-        for t in str.split(' '):
+        for t in str.split():
             r = self.exec(t)
         return r

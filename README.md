@@ -80,7 +80,7 @@ rc 3 prec 1086781292542.8 eng     # Volume of earth in km3 with 3 digits
 rc 20 5 x                         # Use 'x' instead of '*' (no shell expansion)
 rc au C / eng                     # Time for sunlight to reach Earth (s)
 rc Re sq g x G / eng              # Mass of Earth (kg)
-rc 3.828e26 au sq pi x 4 x / eng  # Solar power per m2 (W/m2) at Earth distance
+rc Ls au sq pi x 4 x / eng        # Solar power per m2 (W/m2) at Earth distance
 rc Dm 100 3.6 / / time            # Time to drive to the moon at 100 km/h
 ```
 
@@ -105,6 +105,7 @@ Dm - Distance to the moon (m): 384400000
 btu - British Thermal Unit (J): 1055.1
 kcal - Kilocalorie (J): 4184
 kwh - kWh (J): 3600000.0
+Ls - Solar luminosity (W): 3828000000000.0
 ```
 
 ## Key-pad comma

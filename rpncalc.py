@@ -3,8 +3,8 @@
 import rpn
 import sys
 import math
-import re
 import datetime
+import readline
 
 # https://stackoverflow.com/questions/17973278/python-decimal-engineering-notation-for-mili-10e-3-and-micro-10e-6
 def eng_string( x, format='%s', si=False):
@@ -76,6 +76,7 @@ class rpncalc:
             "btu": (1055.1, "British Thermal Unit (J)"),
             "kcal": (4184, "Kilocalorie (J)"),
             "kwh": (3.6e6, "kWh (J)"),
+            "Ls": (3.828e26, "Solar luminosity (W)")
         }
         self.helptext = '''
 UI functions:
@@ -99,7 +100,7 @@ UI functions:
         for k,v in self.constants.items():
             print(f"{k} - {v[1]}: {v[0]}")
     def eval(self, str):
-        for t in str.split(' '):
+        for t in str.split():
             r = None
             if t in self.cmd:
                 self.cmd[t]()
@@ -147,7 +148,7 @@ if __name__ == "__main__":
         try:
             r = None
             for t in sys.argv[1:]:
-                r = c.eval(re.sub(' +', ' ', t))
+                r = c.eval(t)
             if r:
                 print(r)
         except Exception as e:
@@ -159,7 +160,7 @@ if __name__ == "__main__":
             if not line or line.isspace():
                 c.stack()
             else:
-                r = c.eval(re.sub(' +', ' ', line))
+                r = c.eval(line)
                 if r:
                     print(r)
         except (EOFError, SystemExit):
