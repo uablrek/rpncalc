@@ -75,7 +75,7 @@ alias rc="$PWD/rpncalc.py"
 rc pi =                           # Print pi
 rc 0xffc =                        # Hex -> decimal
 rc 4092 hex                       # Decimal -> hex
-rc 50 1 w /                       # invert top with "1 w /"
+rc 50 1 w /                       # 1/50, invert top with "1 w /"
 rc 3 prec 1086781292542.8 eng     # Volume of earth in km3 with 3 digits
 rc 20 5 x                         # Use 'x' instead of '*' (no shell expansion)
 rc au C / time                    # Time for sunlight to reach Earth
@@ -83,6 +83,8 @@ rc Re sq g x G / eng              # Mass of Earth (kg)
 rc Ls au sq pi x 4 x / eng        # Solar power per m2 (W/m2) at Earth distance
 rc Dm 100 3.6 / / time            # Time to drive to the moon at 100 km/h
 rc -18 Z -                        # -18 degrees Celsius in degrees Kelvin
+rc kcal 1e12 x eng                # One Megaton of energy in J
+rc kcal 1e9 x 15 x si eng         # A Hiroshima bomb (15 kiloton)
 ```
 
 ## Constants
