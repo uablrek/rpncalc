@@ -50,7 +50,7 @@ Example:
 # (note that the string is quoted to prevent the shell from expanding '*')
 # Or using 'x' and constants (no quotes needed)
 ./rpncalc.py 4 3 / pi x Re 3 pow x eng # (in m3)
-1.0868e21
+1.087e21
 # Interactive:
 ./rpncalc.py
 (0) > 4 3 /
@@ -67,7 +67,7 @@ Example:
 
 `si eng` to get [si prefix representation](
 https://en.wikipedia.org/wiki/Metric_prefix). So the volume of earth is
-1.0868 Zm<sup>3</sup> 
+1.087 Zm<sup>3</sup> 
 
 Recipes:
 ```
@@ -90,9 +90,12 @@ rc kcal 1e9 x 15 x si eng         # A Hiroshima bomb (15 kiloton)
 ## Constants
 
 Beside the mathematical constants, `pi` and `e`, other (physical)
-constants are defined. Since I use `rpncalc` for energy and
-astronomical computations, most are in that area. It is simple to add
-more in [rpncalc.py](rpncalc.py).
+constants can be defined. Constants are read from json files, by
+default [constants.json](constants.json). If `$RPNCALC_PATH` is
+specified, all "*.json" files in those directories are loaded.
+
+Since I use `rpncalc` for energy and astronomical computations,
+default constants are in that area.
 
 ```
 ./rpncalc.py hc
@@ -112,6 +115,10 @@ Ls - Solar Luminosity (W): 3.828e+26
 Z - Absolute Zero temperature (Celsius): -273.15
 mev - MeV Mega Electron Volt (J): 1.6e-13
 ```
+
+**Warning:** there is no check for conflicts or errors when loading
+constants
+
 
 ## Key-pad comma
 
@@ -168,6 +175,3 @@ functions just for fun.
 
 I have refrained from adding some "memory" function, even though it
 would be simple. A bit of a point with RPN is to *not* need memories.
-
-I *might* add configuration in json to allow users to add constants
-without altering the code. But so far I have no users, so...
