@@ -5,6 +5,9 @@ import sys
 import math
 import datetime
 import readline
+import json
+import os
+import pathlib
 
 # https://stackoverflow.com/questions/17973278/python-decimal-engineering-notation-for-mili-10e-3-and-micro-10e-6
 def eng_string( x, format='%s', si=False):
@@ -53,6 +56,7 @@ class rpncalc:
             "q": exit,
             "h": self.help,
             "hc": self.print_constants,
+            "hcj": self.print_constants_json,
             "=": self.top,
             "s": self.stack,
             "eng": self.eng,
@@ -63,28 +67,12 @@ class rpncalc:
             "hex": self.hex,
             "time": self.time,
         }
-        self.constants = {
-            "sb": (5.67e-8, "Stefan–Boltzmann constant (W/m2/K^4)"),
-            "Re": (6378e3, "Radius Earth (m)"),
-            "Rs": (696340e3, "Radius Sun (m)"),
-            "au": (149597870700, "Astronomical Unit (m)"),
-            "C": (299792458, "Speed of light (m/s)"),
-            "G": (6.6743e-11, "Gravitational constant (N*m2/kg2)"),
-            "g": (9.80665, "Gravity of Earth (m/s2)"),
-            "ly": (9460730472580800, "Light year (m)"),
-            "Dm": (384400000, "Distance to the moon (m)"),
-            "btu": (1055.1, "British Thermal Unit (J)"),
-            "kcal": (4184, "Kilocalorie (J)"),
-            "kwh": (3.6e6, "kWh (J)"),
-            "Ls": (3.828e26, "Solar Luminosity (W)"),
-            "Z": (-273.15, "Absolute Zero temperature (Celsius)"),
-            "mev": (1.6e-13, "MeV Mega Electron Volt (J)"),
-        }
         self.helptext = '''
 UI functions:
    q, ctrl-D - Quit
    h - Help
    hc - Print constants
+   hcj - Print constants in json
    = - Print top-of-stack (top)
    s, (empty) - Print stack
    eng - Print top in engineering style
@@ -95,12 +83,27 @@ UI functions:
    hex - Print top as hexa-decimal
    time - Print top as time (duration)
 '''
+        self.constants = {}
+        if "RPNCALC_PATH" in os.environ:
+            self.constants = {}
+            for d in os.environ["RPNCALC_PATH"].split(os.pathsep):
+                self.load_constants(d)
+        else:
+            self.load_constants(pathlib.Path(__file__).resolve().parent)
+
+    def load_constants(self, d):
+        for f in pathlib.Path(d).glob('*.json'):
+            with open(f, 'r') as file:
+                self.constants = self.constants | json.load(file)
+
     def help(self):
         print(self.c.helptext, end='')
         print(self.helptext)
     def print_constants(self):
         for k,v in self.constants.items():
             print(f"{k} - {v[1]}: {v[0]}")
+    def print_constants_json(self):
+            print(json.dumps(self.constants))
     def eval(self, str):
         for t in str.split():
             r = None
